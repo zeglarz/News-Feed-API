@@ -13,31 +13,40 @@ let obj = {
     q: '',
     category: '',
     language: '',
-    country: 'us'
+    country: 'pl'
 };
 const getNews = async (obj) => await newsApi.getCryptoHeadlines(obj);
 
 
 app.get('/', (req, res) => {
- getNews(obj).then(response => res.json(response));
+    getNews(obj)
+        .then(data => {
+            let cleanedData = data.articles.map((article) => {
+                if (article.urlToImage === null) {
+                    article.urlToImage = "https://drogariaguarulhos.com.br/media/catalog/product/placeholder/default/notfound.png";
+                }
+                return article
+            });
+            res.json(cleanedData);
+        });
 });
 
 app.get('/articles/:title', (req, res) => {
-getNews()
+getNews(obj)
     .then(data => {
-        let news = data.articles.find((article) => article.title.split("'").join("") === req.params.title);
+        let news = data.articles.find((article) => article.title === decodeURIComponent(req.params.title));
+        console.log(req.params.title);
         res.json(news)
     })
     .catch(err => console.log(err));
 
     });
 
-app.post('/', (req, res) => {
-    let buttonPressed = req.body.country;
+app.get('/:country', (req, res) => {
+    let buttonPressed = req.params.country;
     obj.language = buttonPressed;
     obj.country = buttonPressed;
-    getNews(obj).then(response => res.json(response));
-    console.log(buttonPressed)
+    getNews(obj).then(response => res.json(response.articles))
 });
 
 const runServer = (port) => {
