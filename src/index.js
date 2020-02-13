@@ -1,7 +1,4 @@
 //import './style.scss';
-$('#countryButton').submit(function (e) {
-    e.preventDefault()
-});
 
 function loadArticle(title){
     Api.getArticle(title)
@@ -39,7 +36,7 @@ function loadNewsPage() {
     <div class="card-body">
       <h5 class="card-title">${title}</h5>
       <p class="card-text">${description}</p>
-    <button onclick="loadArticle('${title.split("'").join("")}')" class="btn btn-secondary">Read More</button>
+    <button onclick="loadArticle('${encodeURIComponent(title)}')" class="btn btn-secondary">Read More</button>
         <a href="${url}" class="btn btn-secondary">Go to the source</a>
 
     </div>
@@ -60,7 +57,7 @@ function loadNewsPage() {
             console.log(response);
             const newsContainer = `
                 <div class="container-fluid card-deck">
-                        ${response.articles.map((news) => newsCard(news)).join('')}
+                        ${response.map((news) => newsCard(news)).join('')}
                 </div>`;
 
             document.querySelector("main").innerHTML = newsContainer;
@@ -70,3 +67,10 @@ function loadNewsPage() {
 
 loadNewsPage();
 
+function changeCountry(country) {
+    Api.getNewsByCountry(country);
+    $(".languages img:last-child").remove();
+    $(".languages").append(`<img class="d-inline" src="svg/${country}.svg" /> `);
+    loadNewsPage();
+
+}
