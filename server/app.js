@@ -13,7 +13,7 @@ let obj = {
     q: '',
     category: '',
     language: '',
-    country: 'pl'
+    country: 'us'
 };
 const getNews = async (obj) => await newsApi.getCryptoHeadlines(obj);
 
