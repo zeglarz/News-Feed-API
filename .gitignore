@@ -146,9 +146,4 @@ Temporary Items
 .idea/misc.xml
 .idea/modules.xml
 .idea/watcherTasks.xml
-dist/
-package-lock.json
-package.json
-server/
-src/
-webpack.config.js
+
