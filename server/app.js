@@ -19,6 +19,12 @@ const getNews = async (obj) => await newsApi.getCryptoHeadlines(obj);
 
 
 app.get('/', (req, res) => {
+    obj = {
+        q: '',
+        category: '',
+        language: '',
+        country: 'us'
+    };
     getNews(obj)
         .then(data => {
             let cleanedData = data.articles.map((article) => {
@@ -42,12 +48,38 @@ getNews(obj)
 
     });
 
-app.get('/:country', (req, res) => {
+app.get('/country/:country', (req, res) => {
     let buttonPressed = req.params.country;
     obj.language = buttonPressed;
     obj.country = buttonPressed;
     getNews(obj).then(response => res.json(response.articles))
 });
+
+
+app.get('/category/:category', (req, res) => {
+    let buttonPressed = '';
+    if (req.params.category === 'All') {
+        buttonPressed = '';
+    } else {
+        buttonPressed = req.params.category.toLocaleLowerCase();
+    }
+    obj.category = buttonPressed;
+    getNews(obj).then(response => res.json(response.articles))
+});
+
+app.post('/query', (req, res) => {
+    let query = req.body.query;
+    obj.q = query.toLowerCase();
+    console.log(query);
+});
+
+app.get('/query', (req, res) => {
+    getNews(obj)
+        .then(data => res.json(data.articles));
+});
+
+
+
 
 const runServer = (port) => {
     console.log(`Server is running on port ${port}`);

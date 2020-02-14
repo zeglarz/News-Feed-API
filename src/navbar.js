@@ -1,7 +1,7 @@
 let countries = "ae ar at au be bg br ca ch cn co cu cz de eg fr gb gr hk hu id ie il in it jp kr lt lv ma mx my ng nl no nz ph pl pt ro rs ru sa se sg si sk th tr tw ua us ve za".split(
     " "
 );
-let categories = "Business Entertainment Health Science Sport Technology".split(
+let categories = "Business Entertainment General Health Science Sport Technology".split(
     " "
 );
 
@@ -16,21 +16,23 @@ let navbar = `
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
     <li class="nav-item active">
-    <a class="nav-link" href="#" onclick="changeCountry()">Home <span class="sr-only">(current)</span></a>
+    <a class="nav-link" href="#" onclick="loadNewsPage()">Home <span class="sr-only">(current)</span></a>
 </li>
     <li class="nav-item dropdown">
-    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <a class="nav-link dropdown-toggle category" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
     Categories
     </a>
     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
     ${categories.map(
     category => `
-    <a class="dropdown-item" href="#">${category}</a>
+    <button onclick="changeCategory('${category}')" value="${category}" class="dropdown-item">${category}
+            
+        </button>
     `
 )}
  
 <div class="dropdown-divider"></div>
-    <a class="dropdown-item" href="#">All</a>
+    <button onclick="changeCategory('All')" class="dropdown-item">All</button>
 </div>
 </li>
     <li class="nav-item dropdown">
@@ -54,9 +56,9 @@ let navbar = `
     </li>
 
     </ul>
-    <form class="form-inline my-2 my-lg-0">
-    <input class="form-control mr-sm-2" type="search" placeholder="Search for your topic..." aria-label="Search">
-    <button class="btn btn-outline-success my-2 my-sm-0" type="submit" >Search</button>
+    <form class="form-inline my-2 my-lg-0 query-form" method="POST" action="http://localhost/query">
+    <input class="form-control mr-sm-2" type="search" placeholder="Search for your topic..." aria-label="Search" name="query"/>
+    <button type="submit" onclick="querySearch()" class="btn btn-outline-success my-2 my-sm-0" >Search</button>
     </form>
     </div>
     </nav>`;
