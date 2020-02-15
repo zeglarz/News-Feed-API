@@ -8,7 +8,7 @@ const newsCard = ({title, urlToImage, description, url}) =>
     <div class="card-body">
       <h5 class="card-title">${title}</h5>
       <p class="card-text">${description}</p>
-    <button onclick="loadArticle('${encodeURIComponent(title)}')" class="btn btn-secondary">Read More</button>
+    <button onclick="loadArticle('${encodeURIComponent(title).split("'").join("")}')" class="btn btn-secondary">Read More</button>
         <a href="${url}" target="_blank" class="btn btn-secondary">Go to the source</a>
 
     </div>
@@ -33,9 +33,7 @@ function loadArticle(title){
          <img src="${urlToImage}" class="card-img-top" alt="...">
                  <p>${content}</p>
                          <a href="${url}" target="_blank" class="btn btn-secondary">Go to the source</a>
-
-
-</div>`;
+        </div>`;
             document.querySelector("main").innerHTML = articleContainer;
 
         });
@@ -72,7 +70,7 @@ loadNewsPage();
 
 function changeCountry(country) {
     $(".languages img:last-child").remove();
-    $(".languages").append(`<img class="d-inline" src="svg/${country}.svg" /> `);
+    $(".languages").append(`<img class="d-inline" src="svg/${country.toUpperCase()}.svg" /> `);
     Api.getNewsByCountry(country)
         .catch((error) => {
             document.querySelector('main').innerHTML = `

@@ -40,7 +40,7 @@ app.get('/', (req, res) => {
 app.get('/articles/:title', (req, res) => {
 getNews(obj)
     .then(data => {
-        let news = data.articles.find((article) => article.title === decodeURIComponent(req.params.title));
+        let news = data.articles.find((article) => article.title.split("'").join("") === decodeURIComponent(req.params.title));
         console.log(req.params.title);
         res.json(news)
     })

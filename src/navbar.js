@@ -47,7 +47,7 @@ let navbar = `
         country =>
             `
         <button onclick="changeCountry('${country}')" value="${country}" class="dropdown-item text-center">${country}
-            <img class="d-inline" src="svg/${country}.svg" />
+            <img class="d-inline" src="svg/${country.toUpperCase()}.svg" />
         </button>
     `
     )
@@ -56,7 +56,7 @@ let navbar = `
     </li>
 
     </ul>
-    <form class="form-inline my-2 my-lg-0 query-form" method="POST" action="http://localhost/query">
+    <form class="form-inline my-2 my-lg-0 query-form" method="POST" action="${HOST_URL}/query">
     <input class="form-control mr-sm-2" type="search" placeholder="Search for your topic..." aria-label="Search" name="query"/>
     <button type="submit" onclick="querySearch()" class="btn btn-outline-success my-2 my-sm-0" >Search</button>
     </form>
