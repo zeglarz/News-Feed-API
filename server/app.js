@@ -67,16 +67,18 @@ app.get('/category/:category', (req, res) => {
     getNews(obj).then(response => res.json(response.articles))
 });
 
-app.post('/query', (req, res) => {
-    let query = req.body.query;
+app.get('/query', (req, res) => {
+    let query = req.query.q;
     obj.q = query.toLowerCase();
     console.log(query);
-});
-
-app.get('/query', (req, res) => {
     getNews(obj)
         .then(data => res.json(data.articles));
 });
+
+
+// app.get('/query', (req, res) => {
+//
+// });
 
 
 
