@@ -1,4 +1,30 @@
 //import './style.scss';
+$(document).ready(function () {
+    $('#eraseSearch').hide();
+
+    $(".query-form").click(function(e){
+        e.preventDefault();
+        return false;
+    });
+    $('#eraseSearch').click(function () {
+        querySearch("");
+        $('#q').val('');
+        $('#eraseSearch').hide();
+
+    });
+
+        $("#q").keydown(function(){
+            console.log('see the change');
+            var val = $(this).val();
+                querySearch(val);
+                if (val.length > 2) {
+                    $('#eraseSearch').show();
+
+                }
+
+        });
+});
+
 
 const newsCard = ({title, urlToImage, description, url}) =>
     `<div class="row justify-content-center">
@@ -28,7 +54,10 @@ function loadArticle(title){
         })
         .then((response) => {
             const {title, urlToImage, content, url} = response;
-            const articleContainer = `<div class="container-fluid card-deck">
+            const articleContainer = `
+    <button onclick="changeCountry(currentState.country); changeCategory(currentState.category)">Go Back</button>
+
+<div class="container-fluid card-deck">
         <h1 class="text-center">${title}</h1>
          <img src="${urlToImage}" class="card-img-top" alt="...">
                  <p>${content}</p>
@@ -71,6 +100,7 @@ loadNewsPage();
 function changeCountry(country) {
     $(".languages img:last-child").remove();
     $(".languages").append(`<img class="d-inline" src="svg/${country.toUpperCase()}.svg" /> `);
+    currentState.country = country;
     Api.getNewsByCountry(country)
         .catch((error) => {
             document.querySelector('main').innerHTML = `
@@ -94,6 +124,7 @@ function changeCountry(country) {
 function changeCategory(category) {
     $(".category p:last-child").remove();
     $(".category").append(`<p class="d-inline">: ${category}</p> `);
+    currentState.category = category;
     Api.getNewsByCategory(category)
         .catch((error) => {
             document.querySelector('main').innerHTML = `
@@ -115,9 +146,8 @@ function changeCategory(category) {
 
 }
 
-function querySearch() {
-
-    Api.getNewsByQuery()
+function querySearch(query) {
+    Api.getNewsByQuery(query)
         .catch((error) => {
             document.querySelector('main').innerHTML = `
   <h1 class="text-center" style="color: red">BŁĄD</h1>
@@ -127,13 +157,20 @@ function querySearch() {
         })
         .then((response) => {
             console.log(response);
-            const newsContainer = `
+            if (response.length === 0) {
+                document.querySelector('main').innerHTML = `
+  <h1 class="text-center" style="color: red">No content to present</h1>
+    <h2 class="text-center">Change your searching criteria</h2>
+
+  `
+            } else {
+                const newsContainer = `
                 <div class="container-fluid card-deck">
                         ${response.map((news) => newsCard(news)).join('')}
                 </div>`;
 
-            document.querySelector("main").innerHTML = newsContainer;
-
+                document.querySelector("main").innerHTML = newsContainer;
+            }
         });
 
 }

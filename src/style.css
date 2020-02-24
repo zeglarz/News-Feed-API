@@ -1,3 +1,18 @@
 .dropdown-menu {
     padding: 0 0 !important;
 }
+
+button > buttonInside {
+    margin-left: -38px;
+    position:relative;
+    margin-bottom:10px;
+    right: 0px;
+    top: 4px;
+    border:none;
+    height:20px;
+    width:20px;
+    border-radius:100%;
+    outline:none;
+    text-align:center;
+    padding:2px;
+}

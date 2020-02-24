@@ -5,6 +5,11 @@ let categories = "Business Entertainment General Health Science Sport Technology
     " "
 );
 
+let currentState = {
+    country: '',
+    category: ''
+};
+
 let navbar = `
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -56,9 +61,10 @@ let navbar = `
     </li>
 
     </ul>
-    <form class="form-inline my-2 my-lg-0 query-form" method="POST" action="${HOST_URL}/query">
-    <input class="form-control mr-sm-2" type="search" placeholder="Search for your topic..." aria-label="Search" name="query"/>
-    <button type="submit" onclick="querySearch()" class="btn btn-outline-success my-2 my-sm-0" >Search</button>
+    <form class="form-inline my-2 my-lg-0 query-form" method="GET" action="${HOST_URL}/query">
+    <input id="q" class="form-control mr-sm-2" type="text" placeholder="Search for your topic..." name="query" aria-label="Search"/>
+    <i id="eraseSearch" class="fas fa-times-circle"></i>
+    <button type="submit" id="query-btn" onClick="querySearch(query.value);" class="btn btn-outline-success my-2 my-sm-0 query-btn" >Search</button>
     </form>
     </div>
     </nav>`;
