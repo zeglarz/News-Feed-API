@@ -25,6 +25,26 @@
 
 .navbar-brand {
     font-family: 'Damion';
-    font-size: 1.7rem;
+    font-size: 1.8em;
     margin-right: 20px;
     color: #d62e11 !important;
+}
+
+a.nav-link.fas {
+    color: dimgray !important;
+    font-size: 1.3rem;
+    margin-left: 15px;
+}
+
+a.nav-link:hover {
+    color: lightgray !important;
+}
+
+main {
+    margin-top: 80px;
+}
+
+.dropdown-menu {
+    max-height: 60vh;
+    overflow-y: auto;
+}
