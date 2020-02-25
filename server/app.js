@@ -41,7 +41,6 @@ app.get('/articles/:title', (req, res) => {
     getNews(obj)
         .then(data => {
             let news = data.articles.find((article) => article.title.split('\'').join('') === decodeURIComponent(req.params.title));
-            console.log(req.params.title);
             res.json(news);
         })
         .catch(err => console.log(err));
@@ -70,7 +69,6 @@ app.get('/category/:category', (req, res) => {
 app.get('/query', (req, res) => {
     let query = req.query.q.toLowerCase();
     obj.q = query.toLowerCase();
-    console.log(query);
     getNews(obj)
         .then(data => {
             let searchedArticle = data.articles.filter(r => {
