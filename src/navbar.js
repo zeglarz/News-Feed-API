@@ -1,8 +1,8 @@
-let countries = "ae ar at au be bg br ca ch cn co cu cz de eg fr gb gr hk hu id ie il in it jp kr lt lv ma mx my ng nl no nz ph pl pt ro rs ru sa se sg si sk th tr tw ua us ve za".split(
-    " "
+let countries = 'ae ar at au be bg br ca ch cn co cu cz de eg fr gb gr hk hu id ie il in it jp kr lt lv ma mx my ng nl no nz ph pl pt ro rs ru sa se sg si sk th tr tw ua us ve za'.split(
+    ' '
 );
-let categories = "Business Entertainment General Health Science Sport Technology".split(
-    " "
+let categories = 'Business Entertainment General Health Science Sport Technology'.split(
+    ' '
 );
 
 let currentState = {
@@ -12,8 +12,8 @@ let currentState = {
 
 let navbar = `
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">Newsyfy</a>
+<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+    <a class="navbar-brand" href="#">Newsify</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
     </button>
@@ -34,7 +34,7 @@ let navbar = `
             
         </button>
     `
-)}
+).join('')}
  
 <div class="dropdown-divider"></div>
     <button onclick="changeCategory('All')" class="dropdown-item">All</button>
@@ -51,12 +51,12 @@ let navbar = `
     .map(
         country =>
             `
-        <button onclick="changeCountry('${country}')" value="${country}" class="dropdown-item text-center">${country}
-            <img class="d-inline" src="svg/${country.toUpperCase()}.svg" />
+        <button onclick="changeCountry('${country}')" value="${country}" class="dropdown-item text-center">${country.toUpperCase()}
+             <img class="d-inline" src="svg/${country.toUpperCase()}.svg" />
         </button>
     `
     )
-    .join("")}
+    .join('')}
 
     </li>
 
@@ -69,4 +69,4 @@ let navbar = `
     </div>
     </nav>`;
 
-document.querySelector("header").innerHTML = navbar;
+document.querySelector('header').innerHTML = navbar;

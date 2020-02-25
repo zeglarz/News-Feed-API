@@ -1,18 +1,30 @@
 .dropdown-menu {
     padding: 0 0 !important;
+    min-width: 20px;
 }
 
-button > buttonInside {
+#eraseSearch {
     margin-left: -38px;
-    position:relative;
-    margin-bottom:10px;
+    position: relative;
+    margin-bottom: 10px;
     right: 0px;
     top: 4px;
-    border:none;
-    height:20px;
-    width:20px;
-    border-radius:100%;
-    outline:none;
-    text-align:center;
-    padding:2px;
+    border: none;
+    height: 20px;
+    width: 20px;
+    border-radius: 100%;
+    outline: none;
+    text-align: center;
+    padding: 2px;
+    opacity: 0.25;
 }
+
+.card-deck {
+    margin-top: 75px;
+}
+
+.navbar-brand {
+    font-family: 'Damion';
+    font-size: 1.7rem;
+    margin-right: 20px;
+    color: #d62e11 !important;
