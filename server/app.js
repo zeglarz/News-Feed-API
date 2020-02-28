@@ -71,14 +71,26 @@ app.get('/query', (req, res) => {
     obj.q = query.toLowerCase();
     getNews(obj)
         .then(data => {
-            let searchedArticle = data.articles.filter(r => {
+            let searchedTitle = data.articles.filter(r => {
                 if (r.title !== null || '') return r.title.toLowerCase().includes(query);
                 return false;
             });
-            return res.json(searchedArticle);
+            let searchedDescription = data.articles.filter(r => {
+                if (r.description !== null || '') return r.description.toLowerCase().includes(query);
+                return false;
+            });
+            let joinedResponse = searchedTitle.filter(({title: id1}) => !searchedDescription.some(({title: id2}) => id2 === id1));
+
+            return res.json(joinedResponse);
         });
 });
 
+// var newArray = homes.filter(function (el) {
+//     return el.price <= 1000 &&
+//         el.sqft >= 500 &&
+//         el.num_of_beds >=2 &&
+//         el.num_of_baths >= 2.5;
+// });
 
 // app.get('/query', (req, res) => {
 //
