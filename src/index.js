@@ -61,10 +61,11 @@ function loadArticle(artTitle) {
 
     const { title, urlToImage, content, url } = article;
     const articleContainer = `
-    <button onclick="changeCountry(currentState.country); changeCategory(currentState.category)">Go Back</button>
 
 <div class="container-fluid card-deck">
-        <h1 class="text-center">${title}</h1>
+<button onclick="loadArticleWithoutRefresh()">Go Back</button>
+        <h1 class="text-center">
+${title}</h1>
          <img src="${urlToImage}" class="card-img-top" alt="...">
                  <p>${content}</p>
                          <a href="${url}" target="_blank" class="btn btn-secondary">Go to the source</a>
@@ -72,6 +73,17 @@ function loadArticle(artTitle) {
     document.querySelector('main').innerHTML = articleContainer;
 
 };
+
+function loadArticleWithoutRefresh() {
+    const news = currentState.response;
+    const newsContainer = `
+                <div class="container-fluid card-deck justify-content-center">
+                        ${news.map((news) => newsCard(news)).join('')}
+                </div>`;
+
+    document.querySelector('main').innerHTML = newsContainer;
+
+}
 
 
 function loadNewsPage() {
@@ -98,6 +110,16 @@ function loadNewsPage() {
         });
 
 };
+
+function resetNewsPage() {
+    currentState = {
+        country: 'us',
+        category: '',
+        query: '',
+        response: []
+    };
+    loadNewsPage();
+}
 
 loadNewsPage();
 

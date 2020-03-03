@@ -17,7 +17,7 @@ let navbar = `
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
     <li class="nav-item active">
-    <a class="nav-link fas fa-home" href="#" onclick="loadNewsPage()"> <span class="sr-only">(current)</span></a>
+    <a class="nav-link fas fa-home" href="#" onclick="resetNewsPage()"> <span class="sr-only">(current)</span></a>
 </li>
     <li class="nav-item dropdown">
     <a class="nav-link dropdown-toggle category" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
