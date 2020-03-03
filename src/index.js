@@ -10,7 +10,7 @@ $(document).ready(function () {
         querySearch('');
         $('#q').val('');
         $('#eraseSearch').hide();
-        $('#query-btn').css({'margin-left': '0px'});
+        $('#query-btn').css({ 'margin-left': '0px' });
 
 
     });
@@ -21,10 +21,10 @@ $(document).ready(function () {
 
         if (val.length > 2) {
             $('#eraseSearch').show();
-            $('#query-btn').css({'margin-left': '17px'});
+            $('#query-btn').css({ 'margin-left': '17px' });
         } else {
             $('#eraseSearch').hide();
-            $('#query-btn').css({'margin-left': '0px'});
+            $('#query-btn').css({ 'margin-left': '0px' });
 
         }
         querySearch(val);
@@ -32,15 +32,23 @@ $(document).ready(function () {
     });
 });
 
+window.currentState = {
+    country: 'us',
+    category: '',
+    query: '',
+    response: []
+};
+console.log(currentState.response);
 
-const newsCard = ({title, urlToImage, description, url}) =>
-    `<div class="row col-lg-2 col-md-6 col-sm-12">
+
+const newsCard = ({ title, urlToImage, description, url }) =>
+    `<div class="row col-xs-12 col-md-6 col-lg-4 col-xl-2">
   <div class="card" style="width: 16em; margin-bottom: 15px">
     <img src="${urlToImage}" class="card-img-top" alt="...">
     <div class="card-body">
       <h5 class="card-title">${title}</h5>
       <p class="card-text">${description}</p>
-    <button onclick="loadArticle('${encodeURIComponent(title).split('\'').join('')}')" class="btn btn-outline-success">Read More</button>
+    <button onclick="loadArticle('${escape(title)}')" class="btn btn-outline-success">Read More</button>
         <a href="${url}" target="_blank" class="btn btn-outline-danger">Go to the source</a>
 
     </div>
@@ -48,18 +56,11 @@ const newsCard = ({title, urlToImage, description, url}) =>
   </div>
     `;
 
-function loadArticle(title) {
-    Api.getArticle(title)
-        .catch((error) => {
-            document.querySelector('main').innerHTML = `
-  <h1 class="text-center" style="color: red">BŁĄD</h1>
-  <h2 class="text-center">${error.message}</h2>
-  `;
-            throw error;
-        })
-        .then((response) => {
-            const {title, urlToImage, content, url} = response;
-            const articleContainer = `
+function loadArticle(artTitle) {
+    let article = currentState.response.find((article) => article.title === unescape(artTitle));
+
+    const { title, urlToImage, content, url } = article;
+    const articleContainer = `
     <button onclick="changeCountry(currentState.country); changeCategory(currentState.category)">Go Back</button>
 
 <div class="container-fluid card-deck">
@@ -68,17 +69,16 @@ function loadArticle(title) {
                  <p>${content}</p>
                          <a href="${url}" target="_blank" class="btn btn-secondary">Go to the source</a>
         </div>`;
-            document.querySelector('main').innerHTML = articleContainer;
+    document.querySelector('main').innerHTML = articleContainer;
 
-        });
-}
+};
 
 
 function loadNewsPage() {
     $('.category p:last-child').remove();
     $('.languages img:last-child').remove();
 
-    Api.getNews()
+    Api.getNews(currentState.country, currentState.category, currentState.query)
         .catch((error) => {
             document.querySelector('main').innerHTML = `
   <h1 class="text-center" style="color: red">BŁĄD</h1>
@@ -87,7 +87,7 @@ function loadNewsPage() {
             throw error;
         })
         .then((response) => {
-            console.log(response);
+            currentState.response = response;
             const newsContainer = `
                 <div class="container-fluid card-deck justify-content-center">
                         ${response.map((news) => newsCard(news)).join('')}
@@ -105,7 +105,7 @@ function changeCountry(country) {
     $('.languages img:last-child').remove();
     $('.languages').append(`<img class="d-inline" src="svg/${country.toUpperCase()}.svg" /> `);
     currentState.country = country;
-    Api.getNewsByCountry(country)
+    Api.getNews(currentState.country, currentState.category, currentState.query)
         .catch((error) => {
             document.querySelector('main').innerHTML = `
   <h1 class="text-center" style="color: red">BŁĄD</h1>
@@ -114,7 +114,7 @@ function changeCountry(country) {
             throw error;
         })
         .then((response) => {
-            console.log(response);
+            currentState.response = response;
             const newsContainer = `
                   <div class="container-fluid card-deck justify-content-center">
                         ${response.map((news) => newsCard(news)).join('')}
@@ -129,8 +129,8 @@ function changeCountry(country) {
 function changeCategory(category) {
     $('.category p:last-child').remove();
     $('.category').append(`<p class="d-inline">: ${category}</p> `);
-    currentState.category = category;
-    Api.getNewsByCategory(category)
+    currentState.category = category.toLowerCase();
+    Api.getNews(currentState.country, currentState.category, currentState.query)
         .catch((error) => {
             document.querySelector('main').innerHTML = `
   <h1 class="text-center" style="color: red">BŁĄD</h1>
@@ -139,7 +139,7 @@ function changeCategory(category) {
             throw error;
         })
         .then((response) => {
-            console.log(response);
+            currentState.response = response;
             const newsContainer = `
                    <div class="container-fluid card-deck justify-content-center">
                         ${response.map((news) => newsCard(news)).join('')}
@@ -152,30 +152,32 @@ function changeCategory(category) {
 }
 
 function querySearch(query) {
-    Api.getNewsByQuery(query)
-        .catch((error) => {
-            document.querySelector('main').innerHTML = `
-  <h1 class="text-center" style="color: red">BŁĄD</h1>
-  <h2 class="text-center">${error.message}</h2>
-  `;
-            throw error;
-        })
-        .then((response) => {
-            console.log(response);
-            if (response.length === 0) {
-                document.querySelector('main').innerHTML = `
+    let searchedTitle = currentState.response.filter(r => {
+        if (r.title !== null || '') return r.title.toLowerCase().includes(query);
+        return false;
+    });
+    console.log('searched Title ' + searchedTitle);
+
+    let searchedDescription = currentState.response.filter(r => {
+        if (r.description !== null || '') return r.description.toLowerCase().includes(query);
+        return false;
+    });
+    console.log('searched description ' + searchedDescription);
+    let concat = searchedTitle.concat(searchedDescription);
+    let set = new Set(concat);
+    let joinedResponse = [...set];
+    if (joinedResponse.length === 0) {
+        document.querySelector('main').innerHTML = `
   <h1 class="text-center" style="color: red">No content to present</h1>
     <h2 class="text-center">Change your searching criteria</h2>
 
   `;
-            } else {
-                const newsContainer = `
+    } else {
+        const newsContainer = `
                    <div class="container-fluid card-deck justify-content-center">
-                        ${response.map((news) => newsCard(news)).join('')}
+                        ${joinedResponse.map((news) => newsCard(news)).join('')}
                 </div>`;
 
-                document.querySelector('main').innerHTML = newsContainer;
-            }
-        });
-
+        document.querySelector('main').innerHTML = newsContainer;
+    }
 }

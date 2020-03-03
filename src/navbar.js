@@ -5,10 +5,6 @@ let categories = 'Business Entertainment General Health Science Sport Technology
     ' '
 );
 
-let currentState = {
-    country: '',
-    category: ''
-};
 
 let navbar = `
 
