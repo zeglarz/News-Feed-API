@@ -17,8 +17,6 @@ $(document).ready(function () {
 
     $('#q').keyup(function () {
         let val = $(this).val();
-        console.log(val);
-
         if (val.length > 2) {
             $('#eraseSearch').show();
             $('#query-btn').css({ 'margin-left': '17px' });
@@ -38,11 +36,9 @@ window.currentState = {
     query: '',
     response: []
 };
-console.log(currentState.response);
-
 
 const newsCard = ({ title, urlToImage, description, url }) =>
-    `<div class="row col-xs-12 col-md-6 col-lg-4 col-xl-2">
+    `<div class="row col-xs-12 col-md-6 col-lg-4 col-xl-3">
   <div class="card" style="width: 16em; margin-bottom: 15px">
     <img src="${urlToImage}" class="card-img-top" alt="...">
     <div class="card-body">
@@ -118,6 +114,10 @@ function resetNewsPage() {
         query: '',
         response: []
     };
+    $('#q').val('');
+    $('#eraseSearch').hide();
+    $('#query-btn').css({ 'margin-left': '0px' });
+
     loadNewsPage();
 }
 
@@ -175,16 +175,14 @@ function changeCategory(category) {
 
 function querySearch(query) {
     let searchedTitle = currentState.response.filter(r => {
-        if (r.title !== null || '') return r.title.toLowerCase().includes(query);
+        if (r.title !== null || '') return r.title.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').includes(query);
         return false;
     });
-    console.log('searched Title ' + searchedTitle);
 
     let searchedDescription = currentState.response.filter(r => {
-        if (r.description !== null || '') return r.description.toLowerCase().includes(query);
+        if (r.description !== null || '') return r.description.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').includes(query);
         return false;
     });
-    console.log('searched description ' + searchedDescription);
     let concat = searchedTitle.concat(searchedDescription);
     let set = new Set(concat);
     let joinedResponse = [...set];
