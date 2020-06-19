@@ -1,4 +1,3 @@
-//import './style.scss';
 $(document).ready(function () {
     $('#eraseSearch').hide();
 
@@ -16,8 +15,8 @@ $(document).ready(function () {
     });
 
     $('#q').keyup(function () {
-        let val = $(this).val();
-        if (val.length > 2) {
+        let val = $(this).val().toLowerCase();
+        if (val.length > 0) {
             $('#eraseSearch').show();
             $('#query-btn').css({ 'margin-left': '17px' });
         } else {

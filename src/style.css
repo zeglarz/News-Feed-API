@@ -48,3 +48,7 @@ main {
     max-height: 60vh;
     overflow-y: auto;
 }
+
+.query-form {
+    margin-right: 50px;
+}
