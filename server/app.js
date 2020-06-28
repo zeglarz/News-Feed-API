@@ -8,9 +8,7 @@ var bodyParser = require('body-parser');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-
 const getNews = async (obj) => await newsApi.getCryptoHeadlines(obj);
-
 
 app.get('/', (req, res) => {
     let obj = {

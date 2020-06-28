@@ -3,6 +3,10 @@
     min-width: 20px;
 }
 
+.fixed-top {
+    z-index: 2 !important;
+}
+
 #eraseSearch {
     margin-left: -38px;
     position: relative;
@@ -24,6 +28,7 @@
 }
 
 .navbar-brand {
+    margin-left: 70px;
     font-family: 'Damion';
     font-size: 1.8em;
     margin-right: 20px;
@@ -49,16 +54,24 @@ main {
     overflow-y: auto;
 }
 
-.query-form {
-    margin-right: 50px;
+#q {
+    width: 200px;
+}
+
+.github-corner {
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 200;
+}
+
+.github-corner svg {
+    height: 70px;
+    width: 70px;
 }
 
 .github-corner:hover .octo-arm {
     animation: octocat-wave 560ms ease-in-out
-}
-
-.github-corner .octo-arm {
-    z-index: 999;
 }
 
 @keyframes octocat-wave {
