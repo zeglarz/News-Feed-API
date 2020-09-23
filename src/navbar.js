@@ -24,13 +24,11 @@ const navbar =
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         ${categories
-                            .map(category => 
-                            (`
-                                <button onclick="changeCategory('${category}')" value="${category}" class="dropdown-item">
-                                    ${category}
-                                </button>
-                            `)
-                            ).join('')}
+                            .map(category => (`
+                            <button onclick="changeCategory('${category}')" value="${category}" class="dropdown-item">
+                                ${category}
+                            </button>
+                            `)).join('')}
                     <div class="dropdown-divider"></div>
                         <button onclick="changeCategory('General')" class="dropdown-item">General</button>
                     </div>
